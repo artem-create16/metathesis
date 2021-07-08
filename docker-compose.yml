@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    restart: "always"
+    environment:
+      FLASK_APP: run.py
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 5000:5000
+    command: ["python", "run.py"]
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ex_db
+    ports:
+      - 5900:5432
+volumes:
+  postgres_data:

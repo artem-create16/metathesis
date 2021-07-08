@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row align-items-center h-100">
+        <div class="col-6 mx-auto">
+            <form method="POST" action="/auth/signin">
+                {{ form.csrf_token }}
+                <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="login" class="form-control" id="login" placeholder="name@example.com">
+                    <label for="login">Email address or nickname</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                    <label for="password">Password</label>
+                </div>
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted text-center">&copy; 2021</p>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
