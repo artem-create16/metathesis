@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+        <div class="col-6 mx-auto">
+            <h3>{{ user.username }}</h3>
+            <br>
+            <h4>Ads: </h4>
+            {% for ad in ads %}
+                <p>{{ad.title}}</p>
+                <p>{{ad.category}}</p>
+                <p>{{ad.description}}</p>
+                <hr>
+
+            {% endfor %}
+        </div>
+
+{% endblock %}

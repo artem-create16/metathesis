@@ -24,6 +24,9 @@
                         User: {{ current_user.username }} (Role: {{ current_user.role.value }})
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('ad.create_ad') }}">Create ad</a>
+                </li>
 
             {% endif %}
         </ul>

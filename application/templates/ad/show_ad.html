@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+        <div class="col-6 mx-auto">
+            {% for photo in photos %}
+                <img src="{{ photo }}" alt="Italian Trulli">
+            {% endfor %}
+            <p>{{ad.title}}</p>
+            <p>{{ad.category}}</p>
+            <p>{{ad.description}}</p>
+        </div>
+
+{% endblock %}

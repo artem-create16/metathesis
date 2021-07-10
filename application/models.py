@@ -27,7 +27,7 @@ class User(UserMixin, TimestampMixin, db.Model):
     email = db.Column(db.String(), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
     role = db.Column(ENUM(Role), nullable=False)
-    product = relationship('Product', back_populates='user')
+    ads = relationship('Ad', back_populates='user')
 
     def set_password(self, password):
         """Create hashed password."""
@@ -41,21 +41,31 @@ class User(UserMixin, TimestampMixin, db.Model):
         return check_password_hash(self.password, password)
 
 
-class Product(TimestampMixin, db.Model):
-    __tablename__ = 'products'
+class Ad(TimestampMixin, db.Model):
+    __tablename__ = 'ads'
     id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(), nullable=False)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    product_photos = relationship('ProductPhoto', back_populates='product')
-    user = relationship('User', back_populates='product')
+    ad_photos = relationship('AdPhoto', back_populates='ad')
+    user = relationship('User', back_populates='ads')
+
+    def __init__(self, title, category, description, user_id):
+        self.title = title
+        self.category = category
+        self.description = description
+        self.user_id = user_id
 
 
-class ProductPhoto(TimestampMixin, db.Model):
-    __tablename__ = 'product_photos'
+class AdPhoto(TimestampMixin, db.Model):
+    __tablename__ = 'ad_photos'
 
     id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.String(), unique=True, nullable=False)
-    product = relationship('Product', back_populates='product_photos')
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    link = db.Column(db.Text, nullable=False)
+    ad = relationship('Ad', back_populates='ad_photos')
+    ad_id = db.Column(db.Integer, db.ForeignKey('ads.id'))
 
+    def __init__(self, link, ad_id):
+        self.link = link
+        self.ad_id = ad_id
