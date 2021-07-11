@@ -8,7 +8,16 @@
     <title></title>
 </head>
 <body>
-    <h3>Hi everyone</h3>
+    {% for ad in ads %}
+        <a href="{{ url_for('ad.show_ad', ad_id=ad.id) }}">{{ ad.title }}</a>
+        <p>{{ ad.category }}</p>
+        <p>{{ ad.description }}</p>
+        {% for photo in ad.ad_photos %}
+            <img src="{{ url_for('static', filename = photo.link) }}" alt="First" width=20% height=20%>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+
 </body>
 </html>
 {% endblock %}

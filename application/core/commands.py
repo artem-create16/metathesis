@@ -18,7 +18,7 @@ def seed_db():
     # clear_db()
     create_users()
     # create_projects()
-    create_tasks()
+    # create_tasks()
 
 
 def create_users():

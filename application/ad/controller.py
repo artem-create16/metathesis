@@ -32,37 +32,38 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
+def save_file_in_static(file, file_name, ad_id):
+    file_path = os.path.join(upload_folder + str(ad_id), file_name)
+    file.save(file_path)
+
+
 def upload_photo(ad_id):
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            file_name = secure_filename(file.filename)
-            try:
-                path = os.path.join(upload_folder, ad_id)
-                os.mkdir(path)
-            except FileExistsError:
-                file_path = os.path.join(upload_folder + str(ad_id),
-                                         file_name)
-                file.save(file_path)
-            else:
-                file_path = os.path.join(upload_folder + str(ad_id),
-                                         file_name)
-                file.save(file_path)
-
-            photo = AdPhoto(file_path, ad_id)
-            db.session.add(photo)
-            db.session.commit()
-            return redirect(url_for('ad.show_ad', ad_id=ad_id, file_name=file_name))
+        files = request.files.getlist('file')
+        for file in files:
+            print(file, flush=True)
+            if file and allowed_file(file.filename):
+                file_name = secure_filename(file.filename)
+                try:
+                    path = os.path.join(upload_folder, ad_id)
+                    os.mkdir(path)
+                    save_file_in_static(file, file_name, ad_id)
+                except FileExistsError:
+                    save_file_in_static(file, file_name, ad_id)
+                finally:
+                    file_path = '/uploads/' + str(ad_id) + '/' + file_name
+                    print(file_path, "WAS SAVED", flush=True)
+                    photo = AdPhoto(file_path, ad_id)
+                    db.session.add(photo)
+                    db.session.commit()
+        return redirect(url_for('ad.show_ad', ad_id=ad_id))
     return render_template('ad/photo.html')
 
 
 def show_ad(ad_id):
     ad = Ad.query.get(ad_id)
-    photo_paths = []
-    for root, dirs, files in os.walk("../static/uploads/", topdown=False):
-        for name in files:
-            photo_paths.append(os.path.join(root, name))
-    print(photo_paths, flush=True)
-    return render_template('ad/show_ad.html', ad=ad, photos=photo_paths)
-
+    print(ad.ad_photos, flush=True)
+    for i in ad.ad_photos:
+        print(i, flush=True)
+    return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
 

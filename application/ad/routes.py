@@ -22,7 +22,7 @@ def upload_photo(ad_id):
     return controller.upload_photo(ad_id)
 
 
-@ad_blueprint.route('/ad/<ad_id>')
+@ad_blueprint.route('/<ad_id>')
 @login_required
 def show_ad(ad_id):
     return controller.show_ad(ad_id)
