@@ -1,5 +1,5 @@
 # metathesis
-####After setting env variables
+####After setting env variables <br />
 create folder metathesis/application/static/uploads
 ```
 docker-compose build
