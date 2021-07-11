@@ -5,7 +5,7 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 
 from application import db
-from application.ad.form import ProductForm
+from application.ad.form import AdForm
 from application.models import Ad, AdPhoto
 
 
@@ -13,7 +13,7 @@ upload_folder = "application/static/uploads/"
 
 
 def create_ad():
-    form = ProductForm()
+    form = AdForm()
     if form.validate_on_submit():
         new_ad = Ad(
             form.title.data,
@@ -62,8 +62,23 @@ def upload_photo(ad_id):
 
 def show_ad(ad_id):
     ad = Ad.query.get(ad_id)
-    print(ad.ad_photos, flush=True)
-    for i in ad.ad_photos:
-        print(i, flush=True)
     return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
+
+
+def edit_ad(ad_id):
+    ad = Ad.query.get(ad_id)
+    form = AdForm(request.form, obj=ad)
+    if form.validate_on_submit():
+        form.populate_obj(ad)
+        db.session.commit()
+        return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
+    return render_template('ad/edit_ad.html', ad=ad, form=form)
+
+
+def delete_ad(ad_id):
+    ad = Ad.query.get(ad_id)
+    db.session.delete(ad)
+    db.session.commit()
+    flash(f'The project {ad.title} has been deleted')
+    return redirect(url_for('main.index'))
 

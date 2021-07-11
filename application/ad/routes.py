@@ -26,3 +26,15 @@ def upload_photo(ad_id):
 @login_required
 def show_ad(ad_id):
     return controller.show_ad(ad_id)
+
+
+@ad_blueprint.route('/<ad_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_ad(ad_id):
+    return controller.edit_ad(ad_id)
+
+
+@ad_blueprint.route('/<ad_id>/delete')
+@login_required
+def delete_ad(ad_id):
+    return controller.delete_ad(ad_id)

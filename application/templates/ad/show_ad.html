@@ -11,6 +11,10 @@
             <img src="{{ url_for('static', filename = photo.link) }}" alt="">
             <p></p>
         {%  endfor %}
+        {% if user.id == current_user.id %}
+            <a type="button" class="btn btn-outline-primary" href="{{ url_for('ad.edit_ad', ad_id=ad.id) }}">Edit</a>
+            <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad', ad_id=ad.id) }}">Delete</a>
+        {% endif %}
         </div>
 
 {% endblock %}

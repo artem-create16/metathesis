@@ -7,11 +7,14 @@
             <br>
             <h4>Ads: </h4>
             {% for ad in ads %}
-                <p>{{ad.title}}</p>
+                <a href="{{ url_for('ad.show_ad', ad_id=ad.id) }}">{{ ad.title }}</a>
                 <p>{{ad.category}}</p>
                 <p>{{ad.description}}</p>
+                {% for photo in ad.ad_photos %}
+                    <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=30% height=30%>
+                    <p></p>
+                {%  endfor %}
                 <hr>
-
             {% endfor %}
         </div>
 

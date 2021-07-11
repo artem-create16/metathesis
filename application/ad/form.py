@@ -8,7 +8,7 @@ from wtforms.validators import (
 )
 
 
-class ProductForm(FlaskForm):
+class AdForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     description = TextAreaField('Description')
