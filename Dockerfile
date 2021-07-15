@@ -1,6 +1,7 @@
 FROM python:3.8
 
 WORKDIR /usr/src/app
+ADD . /usr/src/app
 
 COPY requirements.txt ./
 COPY requirements-dev.txt ./
@@ -12,4 +13,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "run.py"]
+CMD ["uwsgi", "app.ini"]

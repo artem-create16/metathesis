@@ -2,16 +2,26 @@ version: "3.8"
 services:
   api:
     build: .
+    container_name: flask
     restart: "always"
     environment:
       FLASK_APP: run.py
     volumes:
       - .:/usr/src/app
-    ports:
-      - 5000:5000
-    command: ["python", "run.py"]
+    expose:
+      - 8080
     depends_on:
       - db
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    volumes:
+    - /application/static/:/static
+    depends_on:
+      - api
+    ports:
+      - "80:80"
   db:
     image: postgres:13
     volumes:
