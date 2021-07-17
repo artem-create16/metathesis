@@ -14,7 +14,10 @@
         {% if user.id == current_user.id %}
             <a type="button" class="btn btn-outline-primary" href="{{ url_for('ad.edit_ad', ad_id=ad.id) }}">Edit</a>
             <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad', ad_id=ad.id) }}">Delete</a>
+        {% else %}
+            <a type="button" class="btn btn-outline-success" href="{{ url_for('messenger.main', ad_id=ad.id) }}">Message</a>
         {% endif %}
+
         </div>
 
 {% endblock %}

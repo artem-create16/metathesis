@@ -5,7 +5,7 @@
         <div class="col-6 mx-auto">
             <h3>{{ user.username }}</h3>
             <br>
-            <h4>Ads: </h4>
+            <h4>Your ads: </h4>
             {% for ad in ads %}
                 <a href="{{ url_for('ad.show_ad', ad_id=ad.id) }}">{{ ad.title }}</a>
                 <p>{{ad.category}}</p>

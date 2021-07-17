@@ -28,11 +28,13 @@ def init_app():
         from application.auth.routes import auth_blueprint
         from application.ad.routes import ad_blueprint
         from application.account.routes import account_blueprint
+        from application.messanger.routes import messenger_blueprint
         from application.models import User, Ad, AdPhoto
         app.register_blueprint(main_blueprint)
         app.register_blueprint(auth_blueprint)
         app.register_blueprint(ad_blueprint)
         app.register_blueprint(account_blueprint)
+        app.register_blueprint(messenger_blueprint)
         # commands
         from application.core.commands import seed_db
         app.cli.add_command(seed_db)
