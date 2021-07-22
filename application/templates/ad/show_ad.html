@@ -3,9 +3,9 @@
 {% block content %}
 
         <div class="col-6 mx-auto">
-        <p>Title: {{ad.title}}</p>
-        <p>Category: {{ad.category}}</p>
-        <p>Description: {{ad.description}}</p>
+        <p>Title: {{ ad.title }}</p>
+        <p>Category: {{ ad.category.value }}</p>
+        <p>Description: {{ ad.description }}</p>
         <p>Author: {{ user.username }}</p>
         {%  for photo in photos %}
             <img src="{{ url_for('static', filename = photo.link) }}" alt="">

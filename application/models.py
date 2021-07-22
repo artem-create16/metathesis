@@ -14,6 +14,15 @@ class Role(enum.Enum):
     user = 'User'
 
 
+class Categories(enum.Enum):
+    transport = 'Transport'
+    real_estate = 'Real estate'
+    electronics = 'Electronics'
+    stuff = 'Stuff'
+    animals = 'Animals'
+    business = 'Business'
+
+
 class TimestampMixin(object):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
@@ -28,7 +37,7 @@ class User(UserMixin, TimestampMixin, db.Model):
     password = db.Column(db.String(), nullable=False)
     role = db.Column(ENUM(Role), nullable=False)
     ads = relationship('Ad', back_populates='user')
-    messages = relationship('Message', back_populates='user')
+    messages = relationship('Message', back_populates='sender')
 
     def set_password(self, password):
         """Create hashed password."""
@@ -45,7 +54,7 @@ class User(UserMixin, TimestampMixin, db.Model):
 class Ad(TimestampMixin, db.Model):
     __tablename__ = 'ads'
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(), nullable=False)
+    category = db.Column(ENUM(Categories), nullable=False)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -80,5 +89,5 @@ class Message(TimestampMixin, db.Model):
     subject = db.Column(db.Text)
     ad_id = db.Column(db.Integer, db.ForeignKey('ads.id'))
     ad = relationship('Ad', back_populates='messages')
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = relationship('User', back_populates='messages')
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    sender = relationship('User', back_populates='messages')

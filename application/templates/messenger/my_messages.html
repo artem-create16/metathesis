@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row align-items-center h-100">
+        <div class="col-6 mx-auto">
+            {% for ad in ads %}
+                {% for message in ad.messages %}
+                    {{ message.subject }} ({{ ad.title }}) ({{ message.sender.username }})
+                    <br>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

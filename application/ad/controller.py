@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 from application import db
 from application.ad.form import AdForm
-from application.models import Ad, AdPhoto
+from application.models import Ad, AdPhoto, Categories
 
 
 upload_folder = "application/static/uploads/"
@@ -14,13 +14,15 @@ upload_folder = "application/static/uploads/"
 
 def create_ad():
     form = AdForm()
-    if form.validate_on_submit():
+    form.category.choices = Categories
+    if request.method == 'POST':
         new_ad = Ad(
             form.title.data,
             form.category.data,
             form.description.data,
             current_user.id
             )
+        print('form.category.data ---->>', form.category.data, flush=True)
         db.session.add(new_ad)
         db.session.commit()
         return redirect(url_for('ad.upload_photo', ad_id=new_ad.id))

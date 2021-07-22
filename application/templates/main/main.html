@@ -8,10 +8,23 @@
     <title></title>
 </head>
 <body>
+    <form style="display: flex; width:25%"  class="form-inline my-2 my-lg-0">
+        <input style="width: 100%" class="form-control mr-sm-2" type="search" placeholder="Search ad" aria-label="Search" name="search" value="{{ request.args.get('search', '') }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <br>
+
+    <form class="form-inline my-2 my-lg-0">
+        {% for category in categoryes %}
+            <input type="checkbox" id="category" name="category" value="{{ category.name }}">{{ category.value }}
+        {% endfor %}
+        <br>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+    </form>
 
     {% for ad in ads %}
         <a href="{{ url_for('ad.show_ad', ad_id=ad.id) }}">{{ ad.title }}</a>
-        <p>{{ ad.category }}</p>
+        <p>{{ ad.category.value }}</p>
         <p>{{ ad.description }}</p>
         {% for photo in ad.ad_photos %}
             <img src="{{ url_for('static', filename = photo.link) }}" alt="First" width=20% height=20%>

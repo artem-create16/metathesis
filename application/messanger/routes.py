@@ -15,3 +15,9 @@ def main(ad_id):
     return controller.main(ad_id)
 
 
+@messenger_blueprint.route('/my_messages')
+@login_required
+def my_messages():
+    return controller.my_messages()
+
+

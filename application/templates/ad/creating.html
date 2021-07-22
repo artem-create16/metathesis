@@ -14,8 +14,11 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="category" class="form-control" id="category" placeholder="category">
-                    <label for="category">Category</label>
+                    <select style="width:100%;" size="7" id="category" name="category">
+                        {% for category in form.category.choices %}
+                            <option value="{{ category.name }}">{{ category.value }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">

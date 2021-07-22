@@ -7,7 +7,7 @@
             <form action="" method="POST">
             <p>{{ ad.title }}</p>
             {% for message in messages %}
-                <p>{{ message.subject }}</p>
+                <p>{{ message.subject }} ({{ message.sender.username }})</p>
             {% endfor %}
             <div class="form-floating mb-3">
             <input type="text" class="form-control" name="subject" id="subject" placeholder="subject">
