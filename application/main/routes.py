@@ -1,7 +1,6 @@
 import os
 
 from flask import Blueprint, render_template, request
-from sqlalchemy.testing import in_
 
 from application.models import Ad
 from application.models import Categories
