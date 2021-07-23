@@ -4,9 +4,8 @@ import flask_login
 from dotenv import load_dotenv
 from flask import Flask
 from flask_migrate import Migrate
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Resource, Api
-
 
 load_dotenv()
 
@@ -33,7 +32,7 @@ def init_app():
         from application.messanger.routes import messenger_blueprint
         from application.api.routes import api_blueprint
         from application.models import User, Ad, AdPhoto
-        from application.api.routes import HelloWorld, AdApi
+        from application.api.routes import AdApi, AdPostApi
         app.register_blueprint(main_blueprint)
         app.register_blueprint(auth_blueprint)
         app.register_blueprint(ad_blueprint)
@@ -50,7 +49,7 @@ def init_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     # registration api link
-    api.add_resource(HelloWorld, '/hello')
     api.add_resource(AdApi, '/api/ad/<ad_id>')
+    api.add_resource(AdPostApi, '/api/ad')
 
     return app
