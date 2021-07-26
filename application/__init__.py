@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
 
 
 load_dotenv()
@@ -29,12 +30,15 @@ def init_app():
         from application.ad.routes import ad_blueprint
         from application.account.routes import account_blueprint
         from application.messanger.routes import messenger_blueprint
+        from application.error.routes import error_blueprint
         from application.models import User, Ad, AdPhoto
+        from .admin import AdminView, HomeAdminView
         app.register_blueprint(main_blueprint)
         app.register_blueprint(auth_blueprint)
         app.register_blueprint(ad_blueprint)
         app.register_blueprint(account_blueprint)
         app.register_blueprint(messenger_blueprint)
+        app.register_blueprint(error_blueprint)
         # commands
         from application.core.commands import seed_db
         app.cli.add_command(seed_db)
@@ -42,5 +46,11 @@ def init_app():
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    admin = Admin(app, name='Metathesis', url='/', index_view=HomeAdminView(name=''))
+
+    admin.add_view(AdminView(User, db.session, name='Users',
+                             endpoint='User'))
+    admin.add_view(AdminView(Ad, db.session, name='Ads',
+                             endpoint='Project'))
 
     return app

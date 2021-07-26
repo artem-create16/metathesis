@@ -14,7 +14,6 @@ main_blueprint = Blueprint('main', __name__, template_folder=template_dir)
 def index():
     search = request.args.get('search')
     categories = request.args.getlist('category')
-    print("Categories -->", categories, flush=True)
     if search:
         ads = Ad.query.filter(
             Ad.title.contains(search) |

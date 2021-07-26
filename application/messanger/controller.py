@@ -53,5 +53,5 @@ def my_messages():
     #
     # print(m1, flush=True)
 
-    return render_template('messenger/my_messages.html', ads=m1)
+    # return render_template('messenger/my_messages.html', ads=m1)
 
