@@ -72,7 +72,7 @@ class AdApi(Resource):
 
     def patch(self, ad_id):
         """
-        curl --request PATCH http://localhost/api/ad/54 -d "category=transport&title=title19.56&description=description_new&user_id=1" -v
+        curl --request PATCH http://localhost/api/ad/54 -d "title=new_t&description=d_new&user_id=1" -v
         """
         ad = Ad.query.get(ad_id)
         if not ad:
