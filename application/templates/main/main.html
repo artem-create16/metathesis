@@ -27,7 +27,7 @@
         <p>{{ ad.category.value }}</p>
         <p>{{ ad.description }}</p>
         {% for photo in ad.ad_photos %}
-            <img src="{{ url_for('static', filename = photo.link) }}" alt="First" width=20% height=20%>
+            <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=20% height=20%>
         {% endfor %}
         <hr>
     {% endfor %}

@@ -8,8 +8,8 @@
             <h4>Your ads: </h4>
             {% for ad in ads %}
                 <a href="{{ url_for('ad.show_ad', ad_id=ad.id) }}">{{ ad.title }}</a>
-                <p>{{ad.category}}</p>
-                <p>{{ad.description}}</p>
+                <p>{{ ad.category.value }}</p>
+                <p>{{ ad.description }}</p>
                 {% for photo in ad.ad_photos %}
                     <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=30% height=30%>
                     <p></p>
