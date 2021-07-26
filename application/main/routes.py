@@ -15,10 +15,11 @@ def index():
     search = request.args.get('search')
     categories = request.args.getlist('category')
     if search:
+        search = "%{}%".format(search)
         ads = Ad.query.filter(
-            Ad.title.contains(search) |
-            Ad.category.contains(search) |
-            Ad.description.contains(search)
+            Ad.title.like(search) |
+            Ad.category.like(search) |
+            Ad.description.like(search)
         ).order_by(Ad.created_at.desc()).all()
 
     elif categories:
