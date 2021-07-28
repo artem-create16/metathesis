@@ -28,7 +28,7 @@
                     <a class="nav-link" href="{{ url_for('ad.create_ad') }}">Create ad</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#my_messages">Messages</a>
+                    <a class="nav-link" href="{{ url_for('messenger.my_messages') }}">Messages</a>
                 </li>
                 {% if current_user.role.name == 'admin' %}
                 <li class="nav-item">

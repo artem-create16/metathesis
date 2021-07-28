@@ -1,10 +1,8 @@
-from flask_login import current_user
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
-
+from sqlalchemy import or_
 from application import db
 from application.models import Message, Ad
-from sqlalchemy import and_, func
 
 
 def get_message(ad_id, sender_id):
@@ -13,10 +11,12 @@ def get_message(ad_id, sender_id):
 
 
 def add_message(ad_id, message):
+    ad = Ad.query.get(ad_id)
     new_message = Message(
         ad_id=ad_id,
         subject=message,
-        sender_id=current_user.id
+        sender_id=current_user.id,
+        recipient_id=ad.user_id
     )
     db.session.add(new_message)
     db.session.commit()
@@ -33,25 +33,18 @@ def main(ad_id):
 
 
 def my_messages():
-    # Если владелец поста current_user и пост имеет сообщения
-    # + Все посты, где отправитель сообщения - current_user
-    messages = Message.query.filter(and_(Ad.user_id == current_user.id, Ad.messages is not None,
-                                         Ad.messages.user_id == current_user)).all()
-
-    # m = Ad.query.join(Message).filter_by(
-    #     Ad.user_id == current_user.id, func.count(Ad.messages) > 0
-    # ).group_by(Ad.id).all()
-    # print(m, flush=True)
-
-    # m1 = Ad.query.filter(
-    #     Ad.user_id == current_user.id, func.count(Ad.messages) > 0
-    # ).group_by(Ad.id).all()
-    #
-    # m2 = db.session.query(Ad).join(Message).filter(
-    #     Ad.user_id == current_user.id, func.count(Ad.messages) > 0
-    # ).all()
-    #
-    # print(m1, flush=True)
-
-    # return render_template('messenger/my_messages.html', ads=m1)
-
+    m = db.session.query(Message).filter(or_(
+        Message.sender_id == current_user.id,
+        Message.recipient_id == current_user.id
+    )).order_by(
+        Message.created_at.desc()
+    ).all()
+    m_dict = {}
+    for message in m:
+        if message.ad.id not in m_dict:
+            m_dict[message.ad.id] = [message]
+        else:
+            m_dict[message.ad.id].append(message)
+    print(m_dict)
+    print('All message for current_user ->', m, flush=True)
+    return render_template('messenger/my_messages.html', m=m)
