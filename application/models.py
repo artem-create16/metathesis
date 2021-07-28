@@ -55,6 +55,7 @@ class User(UserMixin, TimestampMixin, db.Model):
 
 class Ad(TimestampMixin, db.Model):
     __tablename__ = 'ads'
+
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(ENUM(Categories), nullable=False)
     title = db.Column(db.String(), nullable=False)

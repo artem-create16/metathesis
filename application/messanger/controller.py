@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from application import db
-from application.models import Message, Ad
+from application.models import Message, Ad, User
 
 
 def get_message(ad_id, sender_id):
@@ -33,18 +33,27 @@ def main(ad_id):
 
 
 def my_messages():
-    m = db.session.query(Message).filter(or_(
-        Message.sender_id == current_user.id,
-        Message.recipient_id == current_user.id
-    )).order_by(
-        Message.created_at.desc()
+    m = db.session.query(
+        Message.ad_id,
+        Message.id,
+        Message.sender_id,
+        Message.recipient_id,
+        Message.subject
+    ).filter(
+        or_(
+            Message.sender_id == current_user.id,
+            Message.recipient_id == current_user.id
+        )
+    ).group_by(
+        Message.id, Message.ad_id
     ).all()
-    m_dict = {}
-    for message in m:
-        if message.ad.id not in m_dict:
-            m_dict[message.ad.id] = [message]
-        else:
-            m_dict[message.ad.id].append(message)
-    print(m_dict)
+    # m_dict = {}
+    # for message in m:
+    #     if message.ad.id not in m_dict:
+    #         m_dict[message.ad.id] = [message]
+    #     else:
+    #         m_dict[message.ad.id].append(message)
+    # print(m_dict)
     print('All message for current_user ->', m, flush=True)
-    return render_template('messenger/my_messages.html', m=m)
+    # return render_template('messenger/my_messages.html', m=m_dict)
+    return 'ALL IS OK'
