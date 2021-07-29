@@ -12,6 +12,11 @@ main_blueprint = Blueprint('main', __name__, template_folder=template_dir)
 
 @main_blueprint.route('/')
 def index():
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
     search = request.args.get('search')
     categories = request.args.getlist('category')
     if search:
@@ -20,15 +25,17 @@ def index():
             Ad.title.like(search) |
             Ad.category.like(search) |
             Ad.description.like(search)
-        ).order_by(Ad.created_at.desc()).all()
+        ).order_by(Ad.created_at.desc())
 
-    elif categories:
+    if categories:
         ads = Ad.query.filter(
             Ad.category.in_(categories)
         ).all()
 
     else:
-        ads = Ad.query.filter().order_by(Ad.created_at.desc()).all()
+        ads = Ad.query.filter().order_by(Ad.created_at.desc())
+
+    pages = ads.paginate(page=page, per_page=5)
 
     return render_template('main/main.html', title='Index',
-                           ads=ads, categoryes=Categories)
+                           ads=ads, categoryes=Categories, pages=pages)

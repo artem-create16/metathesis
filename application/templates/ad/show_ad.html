@@ -8,7 +8,7 @@
         <p>Description: {{ ad.description }}</p>
         <p>Author: {{ user.username }}</p>
         {%  for photo in photos %}
-            <img src="{{ url_for('static', filename = photo.link) }}" alt="">
+            <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
             <p></p>
         {%  endfor %}
         {% if user.id == current_user.id %}
