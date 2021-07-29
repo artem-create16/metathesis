@@ -37,9 +37,8 @@ class User(UserMixin, TimestampMixin, db.Model):
     password = db.Column(db.String(), nullable=False)
     role = db.Column(ENUM(Role), nullable=False)
     ads = relationship('Ad', back_populates='user')
-    # messages = relationship('Message', back_populates='sender')
-    recipient = relationship("Message", foreign_keys="[Message.recipient_id]", uselist=False, back_populates="recipient")
-    sender = relationship("Message", foreign_keys="[Message.sender_id]", uselist=False, back_populates="sender")
+    messages = relationship('Message', foreign_keys="[Message.user_id]",  back_populates='user')
+    interlocutor = relationship("Message", foreign_keys="[Message.interlocutor_id]", back_populates="interlocutor", uselist=False)
 
     def set_password(self, password):
         """Create hashed password."""
@@ -90,9 +89,9 @@ class Message(TimestampMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.Text)
-    recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    recipient = relationship('User', foreign_keys="[Message.recipient_id]", back_populates="recipient")
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = relationship("User", foreign_keys="[Message.user_id]", back_populates="messages")
+    interlocutor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    interlocutor = relationship("User", foreign_keys="[Message.interlocutor_id]", back_populates='interlocutor', uselist=False)
     ad_id = db.Column(db.Integer, db.ForeignKey('ads.id'))
     ad = relationship('Ad', back_populates='messages')
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    sender = relationship('User', foreign_keys="[Message.sender_id]", back_populates="sender")
