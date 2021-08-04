@@ -16,12 +16,6 @@ def create_ad():
     return controller.create_ad()
 
 
-@ad_blueprint.route('/upload/<ad_id>', methods=['GET', 'POST'])
-@login_required
-def upload_photo(ad_id):
-    return controller.upload_photo(ad_id)
-
-
 @ad_blueprint.route('/<ad_id>')
 @login_required
 def show_ad(ad_id):
