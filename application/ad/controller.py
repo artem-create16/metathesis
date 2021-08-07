@@ -92,15 +92,13 @@ def show_ad(ad_id):
 
 
 def edit_ad(ad_id):
-    print('00000000000000')
     ad = Ad.query.get(ad_id)
-    print('111111111111111111')
     form = AdForm(request.form, obj=ad)
-    print('222222222222222222222')
     form.category.choices = Categories
-    print('FORM CATEGORY',form.category.data, flush=True)
     if request.method == 'POST':
+        files = request.files.getlist('file')
         form.populate_obj(ad)
+        upload_photo(ad.id, files)
         db.session.commit()
         return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
     return render_template('ad/edit_ad.html', ad=ad, form=form)
@@ -116,3 +114,6 @@ def delete_ad(ad_id):
     # shutil.rmtree("../static/uploads/101/back.jpg")
     return redirect(url_for('main.index'))
 
+
+def delete_ad_photo(ad_id, link):
+    pass

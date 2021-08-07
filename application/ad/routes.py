@@ -32,3 +32,9 @@ def edit_ad(ad_id):
 @login_required
 def delete_ad(ad_id):
     return controller.delete_ad(ad_id)
+
+
+@ad_blueprint.route('/<ad_id>/<link>/delete_ad_photo')
+@login_required
+def delete_ad_photo(ad_id, link):
+    return controller.delete_ad_photo(ad_id, link)

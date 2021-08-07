@@ -4,9 +4,9 @@
 
     <div class="row align-items-center h-100">
         <div class="col-6 mx-auto">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {{ form.csrf_token }}
-                <h1 class="h3 mb-3 fw-normal text-center">Create new ad</h1>
+                <h1 class="h3 mb-3 fw-normal text-center">Edit your ad</h1>
 
                 <div class="form-floating mb-3">
                     <input value="{{ ad.title }}" type="text" name="title" class="form-control" id="title" placeholder="title">
@@ -32,13 +32,21 @@
                         {{ ad.description }}
                     </textarea>
                 </div>
+                <div class="col-6 mx-auto">
+                    <p>Add photo: </p>
+                    <input type="file" name="file" id="file" multiple="multiple">
+                    <p></p>
+                </div>
+
                 <div>
                     {% for photo in ad.ad_photos %}
                         <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
+                        <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad_photo', ad_id=ad.id, link=photo.link) }}">Delete</a>
+                        <p></p>
                     {% endfor %}
                 </div>
-                </div>
 
+                </div>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Edit</button>
             </form>
         </div>
