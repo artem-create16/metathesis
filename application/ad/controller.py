@@ -1,4 +1,5 @@
 import os
+
 from PIL import Image
 from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user
@@ -7,7 +8,6 @@ from werkzeug.utils import secure_filename
 from application import db
 from application.ad.form import AdForm
 from application.models import Ad, AdPhoto, Categories
-
 
 upload_folder = "application/static/uploads/"
 
@@ -54,8 +54,7 @@ def check_size(file):
         file.seek(pos)
         return size
     except (AttributeError, IOError):
-        pass
-    return 0
+        abort(400)
 
 
 def resize_image(file):
@@ -73,7 +72,6 @@ def upload_photo(ad_id, files):
         if file and allowed_file(file.filename):
             file_name = secure_filename(file.filename)
             if check_size(file) > 1024 * 1024 + 1:
-                print('True in check size')
                 file = resize_image(file)
             try:
                 path = os.path.join(upload_folder, str(ad_id))
@@ -94,19 +92,27 @@ def show_ad(ad_id):
 
 
 def edit_ad(ad_id):
+    print('00000000000000')
     ad = Ad.query.get(ad_id)
+    print('111111111111111111')
     form = AdForm(request.form, obj=ad)
-    if form.validate_on_submit():
+    print('222222222222222222222')
+    form.category.choices = Categories
+    print('FORM CATEGORY',form.category.data, flush=True)
+    if request.method == 'POST':
         form.populate_obj(ad)
         db.session.commit()
         return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
     return render_template('ad/edit_ad.html', ad=ad, form=form)
 
+# import shutil
+# import stat
 
 def delete_ad(ad_id):
     ad = Ad.query.get(ad_id)
     db.session.delete(ad)
     db.session.commit()
     flash(f'The project {ad.title} has been deleted')
+    # shutil.rmtree("../static/uploads/101/back.jpg")
     return redirect(url_for('main.index'))
 

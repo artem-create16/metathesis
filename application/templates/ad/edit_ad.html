@@ -13,9 +13,16 @@
                     <label for="title">Title</label>
                 </div>
 
-                <div class="form-floating mb-3">
-                    <input value="{{ ad.category }}" type="text" name="category" class="form-control" id="category" placeholder="category">
-                    <label for="category">Category</label>
+                  <div class="form-floating mb-3">
+                    <select style="width:100%;" size="6" id="category" name="category">
+                        {% for category in form.category.choices %}
+                            {% if category == ad.category %}
+                                <option value="{{ category.name }}" selected>{{ category.value }}</option>
+                            {% else %}
+                                <option value="{{ category.name }}">{{ category.value }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -24,6 +31,11 @@
                     <textarea style="white-space: normal" class="form-control rounded-0" name="description" id="description" placeholder="description" rows="10">
                         {{ ad.description }}
                     </textarea>
+                </div>
+                <div>
+                    {% for photo in ad.ad_photos %}
+                        <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
+                    {% endfor %}
                 </div>
                 </div>
 

@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <select style="width:100%;" size="7" id="category" name="category">
+                    <select style="width:100%;" size="6" id="category" name="category">
                         {% for category in form.category.choices %}
                             <option value="{{ category.name }}">{{ category.value }}</option>
                         {% endfor %}
