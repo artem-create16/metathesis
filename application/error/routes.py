@@ -13,3 +13,8 @@ def status_code_403(error):
 @error_blueprint.app_errorhandler(404)
 def status_code_404(error):
     return render_template('error/error_404.html'), 404
+
+
+@error_blueprint.app_errorhandler(413)
+def status_code_413(error):
+    return render_template('error/error_413.html'), 413
