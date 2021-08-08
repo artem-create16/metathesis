@@ -1,15 +1,13 @@
 import os
 
-from PIL import Image
-from flask import render_template, redirect, url_for, request, flash, abort
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 
 from application import db
 from application.ad.form import AdForm
+from application.ad.utils import check_size, resize_image, allowed_file, save_file_in_static
 from application.models import Ad, AdPhoto, Categories
-
-upload_folder = "application/static/uploads/"
 
 
 def save_ad(new_ad, files):
@@ -34,39 +32,8 @@ def create_ad():
     return render_template('ad/creating.html', title='Creating ad', form=form)
 
 
-def allowed_file(filename):
-    allowed_extensions = ['png', 'jpg', 'jpeg']
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
-
-
-def save_file_in_static(file, file_name, ad_id):
-    file_path = os.path.join(upload_folder + str(ad_id), file_name)
-    file.save(file_path)
-
-
-def check_size(file):
-    if file.content_length:
-        return file.content_length
-    try:
-        pos = file.tell()
-        file.seek(0, 2)
-        size = file.tell()
-        file.seek(pos)
-        return size
-    except (AttributeError, IOError):
-        abort(400)
-
-
-def resize_image(file):
-    image = Image.open(file)
-    new_size = (1280, 720)
-    ratio = min(float(new_size[0]) / image.size[0], float(new_size[1]) / image.size[1])
-    w, h = int(image.size[0] * ratio), int(image.size[1] * ratio)
-    resized_file = image.resize((w, h),)
-    return resized_file
-
-
 def upload_photo(ad_id, files):
+    upload_folder = "application/static/uploads/"
     for file in files:
         print(file, flush=True)
         if file and allowed_file(file.filename):
