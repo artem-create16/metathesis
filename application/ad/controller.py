@@ -115,5 +115,10 @@ def delete_ad(ad_id):
     return redirect(url_for('main.index'))
 
 
-def delete_ad_photo(ad_id, link):
-    pass
+def delete_ad_photo(link_id):
+    photo = AdPhoto.query.get(link_id)
+    tmp = photo.ad.id
+    db.session.delete(photo)
+    db.session.commit()
+    flash(f'Photo has been deleted')
+    return redirect(url_for('ad.edit_ad', ad_id=tmp))

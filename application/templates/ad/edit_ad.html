@@ -41,7 +41,7 @@
                 <div>
                     {% for photo in ad.ad_photos %}
                         <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
-                        <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad_photo', ad_id=ad.id, link=photo.link) }}">Delete</a>
+                        <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad_photo', link_id=photo.id) }}">Delete</a>
                         <p></p>
                     {% endfor %}
                 </div>
