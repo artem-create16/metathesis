@@ -1,12 +1,13 @@
 import os
 
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 
 from application import db
 from application.ad.form import AdForm
 from application.ad.utils import check_size, resize_image, allowed_file, save_file_in_static
+from application.admin import is_owner
 from application.models import Ad, AdPhoto, Categories
 
 
@@ -60,6 +61,7 @@ def show_ad(ad_id):
 
 def edit_ad(ad_id):
     ad = Ad.query.get(ad_id)
+    is_owner(ad)
     form = AdForm(request.form, obj=ad)
     form.category.choices = Categories
     if request.method == 'POST':
@@ -70,11 +72,14 @@ def edit_ad(ad_id):
         return render_template('ad/show_ad.html', ad=ad, photos=ad.ad_photos, user=ad.user)
     return render_template('ad/edit_ad.html', ad=ad, form=form)
 
+
 # import shutil
 # import stat
 
+
 def delete_ad(ad_id):
     ad = Ad.query.get(ad_id)
+    is_owner(ad)
     db.session.delete(ad)
     db.session.commit()
     flash(f'The project {ad.title} has been deleted')
@@ -84,6 +89,7 @@ def delete_ad(ad_id):
 
 def delete_ad_photo(link_id):
     photo = AdPhoto.query.get(link_id)
+    is_owner(photo.ad)
     tmp = photo.ad.id
     db.session.delete(photo)
     db.session.commit()

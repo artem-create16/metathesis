@@ -1,12 +1,14 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
-from sqlalchemy import or_, func
+from sqlalchemy import or_
+
 from application import db
-from application.models import Message, Ad, User
+from application.models import Message, Ad
 
 
-def get_message(ad_id, sender_id):
-    messages = Message.query.filter(Message.ad_id == ad_id, Message.sender_id == sender_id)
+def get_message(ad_id, interlocutor_id):
+    messages = Message.query.filter(Message.ad_id == ad_id
+                                    , Message.interlocutor_id == interlocutor_id)
     return messages
 
 
@@ -15,8 +17,8 @@ def add_message(ad_id, message):
     new_message = Message(
         ad_id=ad_id,
         subject=message,
-        sender_id=current_user.id,
-        recipient_id=ad.user_id
+        interlocutor_id=current_user.id,
+        user_id=ad.user_id
     )
     db.session.add(new_message)
     db.session.commit()
@@ -29,20 +31,27 @@ def main(ad_id):
         redirect(url_for('messenger.main', ad_id=ad_id))
     return render_template('messenger/main.html',
                            messages=get_message(ad_id=ad_id,
-                                                sender_id=current_user.id), ad=ad)
+                                                interlocutor_id=current_user.id), ad=ad)
 
 
 def my_messages():
+    """
+    Если владелец поста current_user и пост имеет сообщения
+    (на каждого отправителя к моему посту новый диалог,
+    на одного и того же отправителя на разные посты новый диалог)
+
+    + Все посты, где отправитель сообщения - current_user
+    """
     m = db.session.query(
         Message.ad_id,
         Message.id,
-        Message.sender_id,
-        Message.recipient_id,
+        Message.interlocutor_id,
+        Message.user_id,
         Message.subject
     ).filter(
         or_(
-            Message.sender_id == current_user.id,
-            Message.recipient_id == current_user.id
+            Message.interlocutor_id == current_user.id,
+            Message.user_id == current_user.id
         )
     ).group_by(
         Message.id, Message.ad_id

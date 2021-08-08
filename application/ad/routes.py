@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask_login import login_required
 
 import application.ad.controller as controller
-
+from application.admin import is_owner
 
 template_dir = os.path.abspath('../templates')
 ad_blueprint = Blueprint('ad', __name__, url_prefix='/ad', template_folder=template_dir)
