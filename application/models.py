@@ -59,15 +59,16 @@ class Ad(TimestampMixin, db.Model):
     category = db.Column(ENUM(Categories), nullable=False)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text)
+    connection = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ad_photos = relationship('AdPhoto', back_populates='ad')
-    messages = relationship('Message', back_populates='ad')
     user = relationship('User', back_populates='ads')
 
-    def __init__(self, title, category, description, user_id):
+    def __init__(self, title, category, description, connection,  user_id):
         self.title = title
         self.category = category
         self.description = description
+        self.connection = connection
         self.user_id = user_id
 
 
@@ -82,16 +83,3 @@ class AdPhoto(TimestampMixin, db.Model):
     def __init__(self, link, ad_id):
         self.link = link
         self.ad_id = ad_id
-
-
-class Message(TimestampMixin, db.Model):
-    __tablename__ = 'messages'
-
-    id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = relationship("User", foreign_keys="[Message.user_id]", back_populates="messages")
-    interlocutor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    interlocutor = relationship("User", foreign_keys="[Message.interlocutor_id]", back_populates='interlocutor', uselist=False)
-    ad_id = db.Column(db.Integer, db.ForeignKey('ads.id'))
-    ad = relationship('Ad', back_populates='messages')

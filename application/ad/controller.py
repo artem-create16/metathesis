@@ -26,6 +26,7 @@ def create_ad():
             form.title.data,
             form.category.data,
             form.description.data,
+            form.connection.data,
             current_user.id
         )
         save_ad(new_ad, files)
@@ -73,17 +74,12 @@ def edit_ad(ad_id):
     return render_template('ad/edit_ad.html', ad=ad, form=form)
 
 
-# import shutil
-# import stat
-
-
 def delete_ad(ad_id):
     ad = Ad.query.get(ad_id)
     is_owner(ad)
     db.session.delete(ad)
     db.session.commit()
     flash(f'The project {ad.title} has been deleted')
-    # shutil.rmtree("../static/uploads/101/back.jpg")
     return redirect(url_for('main.index'))
 
 

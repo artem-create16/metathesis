@@ -7,6 +7,7 @@
         <p>Category: {{ ad.category.value }}</p>
         <p>Description: {{ ad.description }}</p>
         <p>Author: {{ user.username }}</p>
+        <p>Connection: {{ ad.connection }}</p>
         {%  for photo in photos %}
             <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
             <p></p>
@@ -14,8 +15,6 @@
         {% if user.id == current_user.id %}
             <a type="button" class="btn btn-outline-primary" href="{{ url_for('ad.edit_ad', ad_id=ad.id) }}">Edit</a>
             <a type="button" class="btn btn-outline-danger" href="{{ url_for('ad.delete_ad', ad_id=ad.id) }}">Delete</a>
-        {% else %}
-            <a type="button" class="btn btn-outline-success" href="{{ url_for('messenger.main', ad_id=ad.id) }}">Message</a>
         {% endif %}
 
         </div>

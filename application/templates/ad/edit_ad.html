@@ -38,6 +38,11 @@
                     <p></p>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <input type="text" value="{{ ad.connection }}" name="connection" class="form-control" id="connection" placeholder="connection">
+                    <label for="connection">Title</label>
+                </div>
+
                 <div>
                     {% for photo in ad.ad_photos %}
                         <img src="{{ url_for('static', filename = photo.link) }}" alt="" width=50% height=50%>
