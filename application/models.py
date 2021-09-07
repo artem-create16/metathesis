@@ -37,8 +37,6 @@ class User(UserMixin, TimestampMixin, db.Model):
     password = db.Column(db.String(), nullable=False)
     role = db.Column(ENUM(Role), nullable=False)
     ads = relationship('Ad', back_populates='user')
-    messages = relationship('Message', foreign_keys="[Message.user_id]",  back_populates='user')
-    interlocutor = relationship("Message", foreign_keys="[Message.interlocutor_id]", back_populates="interlocutor", uselist=False)
 
     def set_password(self, password):
         """Create hashed password."""
@@ -59,7 +57,6 @@ class Ad(TimestampMixin, db.Model):
     category = db.Column(ENUM(Categories), nullable=False)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text)
-    connection = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ad_photos = relationship('AdPhoto', back_populates='ad')
     user = relationship('User', back_populates='ads')
