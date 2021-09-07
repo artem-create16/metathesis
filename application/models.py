@@ -57,6 +57,7 @@ class Ad(TimestampMixin, db.Model):
     category = db.Column(ENUM(Categories), nullable=False)
     title = db.Column(db.String(), nullable=False)
     description = db.Column(db.Text)
+    connection = db.Column(db.String(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     ad_photos = relationship('AdPhoto', back_populates='ad')
     user = relationship('User', back_populates='ads')

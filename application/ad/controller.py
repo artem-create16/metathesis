@@ -22,6 +22,7 @@ def create_ad():
     form.category.choices = Categories
     if request.method == 'POST':
         files = request.files.getlist('file')
+        print(form.connection.data, "CONNECTION", flush=True)
         new_ad = Ad(
             form.title.data,
             form.category.data,
