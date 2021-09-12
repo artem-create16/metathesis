@@ -7,11 +7,15 @@ git clone https://github.com/artem-create16/metathesis.git
 cd metathesis
 ```
 Rename .env.example file to .env and fill all rows
+
+create folder metathesis/application/static/uploads
 ```
 docker-compose build
 docker-compose up
 ```
+
 (Optional. To populate the database with random values)
+
 ```
 docker ps
 docker exec -it {container id "metathesis_db_1"} flask seed 
