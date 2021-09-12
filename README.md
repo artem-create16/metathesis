@@ -32,7 +32,7 @@ Fill all rows, add images and click "Create" <br />
 You should see your ad <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/nice_cat.png?raw=true) <br />
 Click "Delete" and your ad will be deleted or "Edit", here you can edit your post. Rename rows or delete and add new photos <br />
-On main page you can see all ads that has anyone ever created <br />
+On main page you can see all ads that has anyone ever created or by clicking on your nickname you can see only your ads<br />
 Apply filters to show categories and ad names that interest you <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/filters.png?raw=true) <br />
 Open the ad you like by clicking on the ad name <br />
