@@ -6,11 +6,9 @@ from flask_restful import abort, Resource, reqparse
 from application import db
 from application.models import Ad
 
-
 template_dir = os.path.abspath('../templates')
 
 api_blueprint = Blueprint('api', __name__, template_folder=template_dir)
-
 
 parser = reqparse.RequestParser()
 parser.add_argument('category', type=str, required=True)
@@ -36,6 +34,7 @@ def create_ad():
         category=args['category'],
         title=args['title'],
         description=args['description'],
+        connection=args['connection'],
         user_id=args['user_id']
     )
     db.session.add(new_ad)
@@ -84,6 +83,8 @@ class AdApi(Resource):
             ad.title = args['title']
         if args['description']:
             ad.description = args['description']
+        if args['connection']:
+            ad.connection = args['connection']
         if args['user_id']:
             ad.user_id = args['user_id']
         db.session.commit()
@@ -91,8 +92,6 @@ class AdApi(Resource):
         return create_json(ad)
 
 
-
 class AdPostApi(Resource):
     def post(self):
         return create_ad()
-
