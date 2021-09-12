@@ -39,3 +39,28 @@ Open the ad you like by clicking on the ad name <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/open.png?raw=true) <br />
 
 Click "Sign Out" if you want to sign out from your account
+
+# Api
+If you want to get a certain ad make get request
+````
+curl http://localhost/api/ad/number_ad
+````
+For example 
+````
+curl http://localhost/api/ad/1
+````
+
+If you want to create new ad make post request
+````
+curl http://localhost/api/ad/create-ad -d "title=new&description=d_new&category=animals&connection=c_new&user_id=your_id" -X POST -v
+
+````
+
+If you want to delete a certain ad do
+````
+curl http://localhost/api/ad/number_ads -X DELETE -v
+````
+If you want to update a certain ad do
+````
+curl --request PATCH http://localhost/api/ad/54 -d "title=new&description=d_new&user_id=1" -v
+````

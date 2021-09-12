@@ -14,6 +14,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('category', type=str, required=True)
 parser.add_argument('title', type=str, required=True)
 parser.add_argument('description', type=str, required=True)
+parser.add_argument('connection', type=str, required=True)
 parser.add_argument('user_id', type=int, required=True)
 
 
@@ -28,8 +29,7 @@ def create_json(ad):
     return blank
 
 
-def create_ad():
-    args = parser.parse_args()
+def create_ad(args):
     new_ad = Ad(
         category=args['category'],
         title=args['title'],
@@ -63,11 +63,6 @@ class AdApi(Resource):
         db.session.commit()
         return f'Ad {ad_id} was deleted'
 
-    def put(self, ad_id):
-        ad = Ad.query.get(ad_id)
-        if ad:
-            abort(409, message=f"Ad {ad_id} already exists")
-        return create_ad()
 
     def patch(self, ad_id):
         """
@@ -88,10 +83,10 @@ class AdApi(Resource):
         if args['user_id']:
             ad.user_id = args['user_id']
         db.session.commit()
-
         return create_json(ad)
 
 
-class AdPostApi(Resource):
-    def post(self):
-        return create_ad()
+@api_blueprint.route('/api/ad/create-ad', methods=['POST'])
+def post():
+    args = parser.parse_args()
+    return create_ad(args)

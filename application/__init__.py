@@ -30,10 +30,10 @@ def init_app():
         from application.auth.routes import auth_blueprint
         from application.ad.routes import ad_blueprint
         from application.account.routes import account_blueprint
-        from application.api.routes import api_blueprint
         from application.error.routes import error_blueprint
         from application.models import User, Ad, AdPhoto
-        from application.api.routes import AdApi, AdPostApi
+        from application.api.routes import AdApi
+        from application.api.routes import api_blueprint
         from .admin import AdminView, HomeAdminView
 
         app.register_blueprint(main_blueprint)
@@ -59,6 +59,5 @@ def init_app():
                              endpoint='Project'))
     # registration api link
     api.add_resource(AdApi, '/api/ad/<ad_id>')
-    api.add_resource(AdPostApi, '/api/ad')
 
     return app
