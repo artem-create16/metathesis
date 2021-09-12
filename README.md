@@ -27,9 +27,9 @@ Click "Sign up" if you want to register or "Sign in" if you already have account
 After registration you will be taken to the main page, where you can create your ad <br />
 Just click "Create ad" <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/create.png?raw=true) <br />
-Fill all rows, add images and click "Create"
+Fill all rows, add images and click "Create" <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/create_post.png?raw=true) <br />
-You should see your ad
+You should see your ad <br />
 ![alt text](https://github.com/artem-create16/metathesis/blob/master/asserts/images/nice_cat.png?raw=true) <br />
 Click "Delete" and your ad will be deleted or "Edit", here you can edit your post. Rename rows or delete and add new photos <br />
 On main page you can see all ads that has anyone ever created <br />
